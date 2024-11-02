@@ -1,6 +1,9 @@
 extends RigidBody2D
 
 
+signal get_ready
+signal go
+
 const SPEED: float = 700
 const STEP: float = 1.05
 
@@ -11,6 +14,7 @@ func _ready() -> void:
 	linear_velocity = Vector2(randf_range(-SPEED * 0.6, SPEED * 0.6), SPEED)
 	$DeathDelay.stop()
 	$SpawnDelay.start()
+	get_ready.emit()
 
 
 func increase_speed() -> void:
@@ -25,6 +29,7 @@ func die() -> void:
 
 func _on_spawn_delay_timeout() -> void:
 	freeze = false
+	go.emit()
 
 
 func _on_death_delay_timeout() -> void:

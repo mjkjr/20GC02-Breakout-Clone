@@ -1,11 +1,6 @@
 extends Node
 
 
-## TODO: Touch input support
-## TODO: play a sound when brick hit
-## TODO: play background music
-
-
 const BRICK = preload("res://brick.tscn")
 const BALL = preload("res://ball.tscn")
 
@@ -14,6 +9,9 @@ var high_score: int = 0
 var lives: int = 3
 
 var paddle_scale: float = 1
+
+var paused: bool = false
+var game_over: bool = false
 
 
 func _ready() -> void:
@@ -35,7 +33,20 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Pause"):
-		pause()
+		if  (
+				paused != true
+				and game_over == false
+		):
+			pause()
+		elif paused == true:
+			unpause()
+	
+	if Input.is_action_pressed("Press"):
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		var tween_paddle = get_tree().create_tween()
+		tween_paddle.tween_property($Paddle, "global_position", Vector2(get_viewport().get_mouse_position().x, $Paddle.global_position.y), 0.1)
+	else:
+		Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 
 
 func _notification(what: int) -> void:
@@ -51,11 +62,15 @@ func _on_ball_body_entered(body: Node) -> void:
 		$Walls/Top/ColorRect.color = new_color
 		$Walls/Right/ColorRect.color = new_color
 		$Paddle/ColorRect.color = new_color
-		body.queue_free()
+		body.free()
+		$Audio/Brick.play()
+		if $Bricks.get_child_count() == 0:
+			win()
 		increase_score()
 		$Ball.increase_speed()
 	elif category == "Game":
 		if body.name == "Paddle":
+			$Audio/Paddle.play()
 			$Ball.increase_speed()
 	elif category == "Walls":
 		if body.name == "Bottom":
@@ -93,19 +108,28 @@ func set_lives(num: int) -> void:
 
 
 func pause() -> void:
-	$PauseScreen.visible = true
+	paused = true
+	$UI/PauseScreen.visible = true
 	$Paddle.process_mode = PROCESS_MODE_DISABLED
 	$Ball.set_deferred("process_mode", PROCESS_MODE_DISABLED)
 
 
 func unpause() -> void:
-	$PauseScreen.visible = false
+	paused = false
+	$UI/PauseScreen.visible = false
 	$Paddle.process_mode = PROCESS_MODE_INHERIT
 	$Ball.set_deferred("process_mode", PROCESS_MODE_INHERIT)
 
 
+func win() -> void:
+	$UI/WinScreen.visible = true
+	$Paddle.process_mode = PROCESS_MODE_DISABLED
+	$Ball.set_deferred("process_mode", PROCESS_MODE_DISABLED)
+
+
 func gameover() -> void:
-	$GameOverScreen.visible = true
+	game_over = true
+	$UI/GameOverScreen.visible = true
 	save_high_score()
 	$Paddle.process_mode = PROCESS_MODE_DISABLED
 	$Ball.set_deferred("process_mode", PROCESS_MODE_DISABLED)
@@ -138,9 +162,19 @@ func _on_play_again_pressed() -> void:
 	$Paddle.process_mode = PROCESS_MODE_INHERIT
 	$Ball.set_deferred("process_mode", PROCESS_MODE_INHERIT)
 	$Ball._ready()
-	$GameOverScreen.visible = false
+	$UI/GameOverScreen.visible = false
+	$UI/WinScreen.visible = false
+	game_over = false
 	_ready()
 
 
 func _on_resume_pressed() -> void:
 	unpause()
+
+
+func _on_ball_get_ready() -> void:
+	$UI/GetReady.visible = true
+
+
+func _on_ball_go() -> void:
+	$UI/GetReady.visible = false

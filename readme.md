@@ -1,4 +1,4 @@
-# ==NAME TBD==
+# Rectangle Pop
 A Breakout Clone.
 
 My game #2 of the [20 Games Challenge](https://20_games_challenge.gitlab.io/).
@@ -11,10 +11,10 @@ My game #2 of the [20 Games Challenge](https://20_games_challenge.gitlab.io/).
 
 ## 🕹️ Play
 
-https://mjkjr.itch.io/==NAME-TBD==-breakout-clone
+https://mjkjr.itch.io/rectangle-pop-breakout-clone
 
 ## 👋 Acknowledgments
 
 - Engine: [Godot](https://godotengine.org/)
-- ==MORE TBD==
+- SFX: [JDSherbert](https://jdsherbert.itch.io/terms-and-conditions)
 
