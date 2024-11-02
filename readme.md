@@ -1,4 +1,4 @@
-# Rectangle Pop
+# 💥 Rectangle Pop
 A Breakout Clone.
 
 My game #2 of the [20 Games Challenge](https://20_games_challenge.gitlab.io/).
