@@ -1,0 +1,41 @@
+[gd_scene load_steps=4 format=3 uid="uid://c771vnn0c23vs"]
+
+[ext_resource type="Script" path="res://ball.gd" id="1_7ierm"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_u5fo6"]
+friction = 0.1
+bounce = 1.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ls74r"]
+radius = 9.0
+
+[node name="Ball" type="RigidBody2D"]
+position = Vector2(960, 675)
+collision_layer = 2
+collision_mask = 7
+physics_material_override = SubResource("PhysicsMaterial_u5fo6")
+gravity_scale = 0.25
+freeze = true
+continuous_cd = 2
+contact_monitor = true
+max_contacts_reported = 1
+linear_damp_mode = 1
+angular_damp_mode = 1
+constant_force = Vector2(0, 5)
+script = ExtResource("1_7ierm")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+polygon = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_ls74r")
+
+[node name="SpawnDelay" type="Timer" parent="."]
+wait_time = 1.5
+one_shot = true
+
+[node name="DeathDelay" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="SpawnDelay" to="." method="_on_spawn_delay_timeout"]
+[connection signal="timeout" from="DeathDelay" to="." method="_on_death_delay_timeout"]

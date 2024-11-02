@@ -1,0 +1,234 @@
+[gd_scene load_steps=11 format=3 uid="uid://w8h66hs4r8rm"]
+
+[ext_resource type="Script" path="res://game.gd" id="1_epae2"]
+[ext_resource type="Script" path="res://paddle.gd" id="2_i72po"]
+[ext_resource type="PackedScene" uid="uid://c771vnn0c23vs" path="res://ball.tscn" id="3_xyr11"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_l0v1f"]
+size = Vector2(500, 2016)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_wlj6y"]
+bounce = 0.5
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7wkj5"]
+size = Vector2(1920, 500)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ldg2r"]
+size = Vector2(500, 2016)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_vsb8g"]
+size = Vector2(1920, 500)
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ow2su"]
+friction = 0.5
+rough = true
+bounce = 0.25
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_60qlo"]
+size = Vector2(240, 32)
+
+[node name="Game" type="Node"]
+script = ExtResource("1_epae2")
+
+[node name="Background" type="CanvasLayer" parent="."]
+layer = -1
+
+[node name="ColorRect" type="ColorRect" parent="Background"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="Walls" type="Node2D" parent="."]
+
+[node name="Left" type="StaticBody2D" parent="Walls"]
+
+[node name="ColorRect" type="ColorRect" parent="Walls/Left"]
+offset_right = 32.0
+offset_bottom = 1080.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Left"]
+position = Vector2(-218, 540)
+shape = SubResource("RectangleShape2D_l0v1f")
+
+[node name="Top" type="StaticBody2D" parent="Walls"]
+collision_mask = 2
+physics_material_override = SubResource("PhysicsMaterial_wlj6y")
+
+[node name="ColorRect" type="ColorRect" parent="Walls/Top"]
+offset_left = 32.0
+offset_right = 1888.0
+offset_bottom = 32.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Top"]
+position = Vector2(960, -218)
+shape = SubResource("RectangleShape2D_7wkj5")
+
+[node name="Right" type="StaticBody2D" parent="Walls"]
+
+[node name="ColorRect" type="ColorRect" parent="Walls/Right"]
+offset_left = 1888.0
+offset_right = 1920.0
+offset_bottom = 1080.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Right"]
+position = Vector2(2138, 540)
+shape = SubResource("RectangleShape2D_ldg2r")
+
+[node name="Bottom" type="StaticBody2D" parent="Walls"]
+collision_mask = 2
+physics_material_override = SubResource("PhysicsMaterial_wlj6y")
+
+[node name="ColorRect" type="ColorRect" parent="Walls/Bottom"]
+offset_left = 32.0
+offset_top = 1048.0
+offset_right = 1888.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Walls/Bottom"]
+position = Vector2(960, 1298)
+shape = SubResource("RectangleShape2D_vsb8g")
+
+[node name="Paddle" type="AnimatableBody2D" parent="."]
+position = Vector2(960, 984)
+collision_layer = 4
+physics_material_override = SubResource("PhysicsMaterial_ow2su")
+sync_to_physics = false
+script = ExtResource("2_i72po")
+
+[node name="ColorRect" type="ColorRect" parent="Paddle"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -16.0
+offset_right = 120.0
+offset_bottom = 16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Paddle"]
+shape = SubResource("RectangleShape2D_60qlo")
+
+[node name="Ball" parent="." instance=ExtResource("3_xyr11")]
+
+[node name="Bricks" type="Node" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+
+[node name="Scores" type="GridContainer" parent="UI"]
+offset_left = 50.0
+offset_top = 45.0
+offset_right = 279.0
+offset_bottom = 149.0
+size_flags_horizontal = 0
+columns = 2
+
+[node name="ScoreLabel" type="Label" parent="UI/Scores"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Score: "
+horizontal_alignment = 2
+
+[node name="Score" type="Label" parent="UI/Scores"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "0"
+
+[node name="HighScoreLabel" type="Label" parent="UI/Scores"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "High Score: "
+
+[node name="HighScore" type="Label" parent="UI/Scores"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "0"
+
+[node name="Lives" type="GridContainer" parent="UI"]
+offset_left = 1740.0
+offset_top = 50.0
+offset_right = 1865.0
+offset_bottom = 154.0
+size_flags_horizontal = 8
+columns = 2
+
+[node name="LivesLabel" type="Label" parent="UI/Lives"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "Lives: "
+
+[node name="Lives" type="Label" parent="UI/Lives"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 36
+text = "3"
+
+[node name="GameOverScreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="GameOverScreen"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.752941, 0.25098, 0.25098, 0.8)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GameOverScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -252.5
+offset_top = -101.0
+offset_right = 252.5
+offset_bottom = 101.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="GameOverScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 84
+text = "GAME OVER!"
+
+[node name="PlayAgain" type="Button" parent="GameOverScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Play Again"
+
+[node name="PauseScreen" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="ColorRect" type="ColorRect" parent="PauseScreen"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0.768627, 0.768627, 0.768627, 0.768627)
+
+[node name="HBoxContainer" type="VBoxContainer" parent="PauseScreen"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -284.0
+offset_top = -105.0
+offset_right = 284.0
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="PauseScreen/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 84
+text = "PAUSED"
+
+[node name="Resume" type="Button" parent="PauseScreen/HBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 60
+text = "Resume"
+
+[connection signal="body_entered" from="Ball" to="." method="_on_ball_body_entered"]
+[connection signal="pressed" from="GameOverScreen/VBoxContainer/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="PauseScreen/HBoxContainer/Resume" to="." method="_on_resume_pressed"]
