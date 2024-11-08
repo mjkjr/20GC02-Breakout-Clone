@@ -15,6 +15,10 @@ var game_over: bool = false
 
 
 func _ready() -> void:
+	var version  = ProjectSettings.get_setting("application/config/version")
+	if version != null:
+		%VersionLabel.text = "Version: " + version
+	
 	load_high_score()
 	
 	var new_color = Color(randf_range(0.5, 1.0), randf_range(0.5, 1.0), randf_range(0.5, 1.0), 1)
@@ -86,6 +90,7 @@ func increase_score() -> void:
 
 
 func died() -> void:
+	$Audio/Miss.play()
 	$Ball.call_deferred("die")
 	set_lives(lives-1)
 	if lives == 0:
@@ -178,3 +183,11 @@ func _on_ball_get_ready() -> void:
 
 func _on_ball_go() -> void:
 	$UI/GetReady.visible = false
+
+
+func _on_show_credits_pressed() -> void:
+	$UI/CreditsScreen.visible = true
+
+
+func _on_dismiss_credits_pressed() -> void:
+	$UI/CreditsScreen.visible = false

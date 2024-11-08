@@ -1,10 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://w8h66hs4r8rm"]
+[gd_scene load_steps=14 format=3 uid="uid://w8h66hs4r8rm"]
 
 [ext_resource type="Script" path="res://game.gd" id="1_epae2"]
 [ext_resource type="Script" path="res://paddle.gd" id="2_i72po"]
 [ext_resource type="PackedScene" uid="uid://c771vnn0c23vs" path="res://ball.tscn" id="3_xyr11"]
 [ext_resource type="AudioStream" uid="uid://c4pn2akywe7y3" path="res://assets/audio/JDSherbert - Ultimate UI SFX Pack - Popup Open - 1.wav" id="4_vy8wo"]
 [ext_resource type="AudioStream" uid="uid://dhfodr7l52ygm" path="res://assets/audio/JDSherbert - Ultimate UI SFX Pack - Popup Close - 1.wav" id="5_pj2gc"]
+[ext_resource type="AudioStream" uid="uid://dvfxi2grbmh6w" path="res://assets/audio/JDSherbert - Ultimate UI SFX Pack - Cancel - 2.wav" id="6_c8j78"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_l0v1f"]
 size = Vector2(500, 2016)
@@ -213,6 +214,11 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Play Again"
 
+[node name="ShowCredits" type="Button" parent="UI/GameOverScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Credits"
+
 [node name="PauseScreen" type="ColorRect" parent="UI"]
 visible = false
 offset_right = 1920.0
@@ -274,6 +280,64 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Play Again"
 
+[node name="ShowCredits" type="Button" parent="UI/WinScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 48
+text = "Credits"
+
+[node name="CreditsScreen" type="ColorRect" parent="UI"]
+visible = false
+offset_right = 1920.0
+offset_bottom = 1080.0
+color = Color(0, 0, 0, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CreditsScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -252.5
+offset_top = -101.0
+offset_right = 252.5
+offset_bottom = 101.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="UI/CreditsScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 84
+text = "Credits"
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="UI/CreditsScreen/VBoxContainer"]
+layout_mode = 2
+
+[node name="VersionLabel" type="Label" parent="UI/CreditsScreen/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+horizontal_alignment = 1
+
+[node name="HSeparator2" type="HSeparator" parent="UI/CreditsScreen/VBoxContainer"]
+layout_mode = 2
+
+[node name="Credits" type="Label" parent="UI/CreditsScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "• Design: Michael J. Kozubal Jr. (mjkjr.itch.io)
+• Code: Michael J. Kozubal Jr. (github.com/mjkjr)
+• Engine: Godot (godotengine.org)
+• Sound Effects: JDSherbert (jdsherbert.itch.io)
+• Special Thanks: Matthew S (20_games_challenge.gitlab.io)"
+
+[node name="DismissCredits" type="Button" parent="UI/CreditsScreen/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Dismiss"
+
 [node name="Audio" type="Node" parent="."]
 
 [node name="Brick" type="AudioStreamPlayer" parent="Audio"]
@@ -284,9 +348,16 @@ bus = &"Phaser"
 stream = ExtResource("5_pj2gc")
 bus = &"Phaser"
 
+[node name="Miss" type="AudioStreamPlayer" parent="Audio"]
+stream = ExtResource("6_c8j78")
+bus = &"Phaser"
+
 [connection signal="body_entered" from="Ball" to="." method="_on_ball_body_entered"]
 [connection signal="get_ready" from="Ball" to="." method="_on_ball_get_ready"]
 [connection signal="go" from="Ball" to="." method="_on_ball_go"]
 [connection signal="pressed" from="UI/GameOverScreen/VBoxContainer/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="UI/GameOverScreen/VBoxContainer/ShowCredits" to="." method="_on_show_credits_pressed"]
 [connection signal="pressed" from="UI/PauseScreen/HBoxContainer/Resume" to="." method="_on_resume_pressed"]
 [connection signal="pressed" from="UI/WinScreen/VBoxContainer/PlayAgain" to="." method="_on_play_again_pressed"]
+[connection signal="pressed" from="UI/WinScreen/VBoxContainer/ShowCredits" to="." method="_on_show_credits_pressed"]
+[connection signal="pressed" from="UI/CreditsScreen/VBoxContainer/DismissCredits" to="." method="_on_dismiss_credits_pressed"]

@@ -16,5 +16,6 @@ https://mjkjr.itch.io/rectangle-pop-breakout-clone
 ## 👋 Acknowledgments
 
 - Engine: [Godot](https://godotengine.org/)
-- SFX: [JDSherbert](https://jdsherbert.itch.io/terms-and-conditions)
+- Sound Effects: [JDSherbert](https://jdsherbert.itch.io/terms-and-conditions)
+- Special Thanks: [Matthew S](https://20_games_challenge.gitlab.io/)
 
